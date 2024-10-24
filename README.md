@@ -18,7 +18,8 @@ Also, it has two pointers next and prev. Create another class Browser which cont
 3. switchToNextTab() - This function switches the cursor from the current tab to the next tab. If the next tab is present then print details of the tab. If there is no previous tab it should print a message that says  “No next tab”.
 4. closeCurrentTab()- It deletes the current tab from the browser. When you close the current tab the new current tab will be the next tab. Print the new current tab which is the next tab with a message “Now the current tab  = “ and current tab name.  
 
-5. bookmarkCurrent() - It bookmarks the current tab and saves the pair(name,url) in the vector of pairs if the current tab is still present in Browser. Use std::pair to store pairs in the vector. Vector can be defined as -  std::vector<std::pair<data types of elements>> vector name; The repetition of bookmarks is not allowed, if a repetitive tab is trying to insert inside a vector it should give a message “The bookmark is already added!!”. 
+5. bookmarkCurrent() - It bookmarks the current tab and saves the pair(name,url) in the vector of pairs if the current tab is still present in Browser. Use std::pair to store pairs in the vector. Vector can be defined as -  std::vector<std::pair<data types of elements>> vector name
+   * The repetition of bookmarks is not allowed, if a repetitive tab is trying to insert inside a vector it should give a message “The bookmark is already added!!”. 
 
 7. showBookmarkTab() - It will print all the bookmarks as follows: 
 		Bookmarks:
