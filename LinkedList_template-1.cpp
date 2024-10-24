@@ -7,6 +7,18 @@
 #include<string>
 
 // Write template class Tab here
+template <typename T>
+class Tab {
+    public:
+    // Created the three values.
+    std::string url;
+    std::string name;
+    T memory;
+    // Created the two pointers.
+    Tab* next;
+    Tab* prev;
+
+};
 
 
 // Write template class Browser here
