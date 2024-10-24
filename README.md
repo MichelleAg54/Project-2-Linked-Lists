@@ -19,33 +19,32 @@ Also, it has two pointers next and prev. Create another class Browser which cont
 4. closeCurrentTab()- It deletes the current tab from the browser. When you close the current tab the new current tab will be the next tab. Print the new current tab which is the next tab with a message “Now the current tab  = “ and current tab name.  
 
 5. bookmarkCurrent() - It bookmarks the current tab and saves the pair(name,url) in the vector of pairs if the current tab is still present in Browser. Use std::pair to store pairs in the vector. Vector can be defined as -  std::vector<std::pair<data types of elements>> vector name
+   The repetition of bookmarks is not allowed, if a repetitive tab is trying to insert inside a vector it should give a message “The bookmark is already added!!”. 
 
-The repetition of bookmarks is not allowed, if a repetitive tab is trying to insert inside a vector it should give a message “The bookmark is already added!!”. 
-
-6. showBookmarkTab() - It will print all the bookmarks as follows: 
+7. showBookmarkTab() - It will print all the bookmarks as follows: 
 		Bookmarks:
 name(url)
 
-7. moveCurrentToFirst() - If the current tab is still present in the browser, move it to first position.
+8. moveCurrentToFirst() - If the current tab is still present in the browser, move it to first position.
 
-8. total_memory() - It calculates the total memory consumed by the browser in total. It will return the memory consumption. 
+9. total_memory() - It calculates the total memory consumed by the browser in total. It will return the memory consumption. 
 
-9. deleteTab() - It will delete the tab which is consuming the highest memory out of all the tabs. After deletion it will print the message and tab which is deleted with memory consumption.  
+10. deleteTab() - It will delete the tab which is consuming the highest memory out of all the tabs. After deletion it will print the message and tab which is deleted with memory consumption.  
 	
 
 # Grading Rubric:
 Your grade will be comprised of following parts: 
-addNewTab() (4 marks)
-switchToPrevTab(3 marks)
-switchToNextTab() (3 marks)
-closeCurrentTab() (4 marks)
-bookmarkCurrent() (2 marks)
-showBookmarkBar() (3 marks)
-moveCurrentToFirst() (5 marks)
-total_memory(3 marks)
-deleteTab() (8 marks)
-Compilation of program (5 marks)
-Successful run on all test cases(10 marks)- Partial marks will be given if few of them successfully run. 
+* addNewTab() (4 marks)
+* switchToPrevTab(3 marks)
+* switchToNextTab() (3 marks)
+* closeCurrentTab() (4 marks)
+* bookmarkCurrent() (2 marks)
+* showBookmarkBar() (3 marks)
+* moveCurrentToFirst() (5 marks)
+* total_memory(3 marks)
+* deleteTab() (8 marks)
+* Compilation of program (5 marks)
+* Successful run on all test cases(10 marks)- Partial marks will be given if few of them successfully run. 
 
 # What to Do
 The starter template is provided. It has a main() function. Do not make any changes in the main function. Make changes in respective classes. Add the same name of a function that I mentioned above. If you make any other changes and code is giving different output. You will lose the marks. Make the submissions on time. No extensions will be provided. Late submissions will be accepted but 3% marks will be deducted. 
