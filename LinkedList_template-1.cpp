@@ -10,18 +10,77 @@
 template <typename T>
 class Tab {
     public:
+    // Created the two pointers.
+    Tab* next;
+    Tab* prev;
+
+    Tab(const std::string& url, const std::string& name, const T& memory)
+       : url(url), name(name), memory(memory), prev(nullptr), next(nullptr) {}
+    
+    ~Tab() {}
+
+    std::string getUrl() const { return url; }
+    std::string getName() const {return name;}
+    T getMemory() const {return memory;}
+
+    private:
     // Created the three values.
     std::string url;
     std::string name;
     T memory;
-    // Created the two pointers.
-    Tab* next;
-    Tab* prev;
 
 };
 
 
 // Write template class Browser here
+template <typename T>
+class Browser {
+    public:
+    Browser() : head(nullptr), tail(nullptr), current(nullptr) {}
+
+    void addNewTab(const std::string& url, const std::string& name, const T& memory) {
+        Tab<T>* newTab = new Tab(url, name, memory);
+        if (!head) {
+            head = tail = current = newTab;
+        } else {
+            tail->next = newTab;
+            newTab->prev = tail;
+            tail = newTab;
+            current = newTab;
+        }
+    }
+
+    void switchToPrevTab() {
+        if(current && current->prev) {
+            current = current->prev;
+            std::cout << "Switch to previous tab =\n";
+            std::cout << current->getUrl;
+            std::cout << current->getName;
+            std::cout << current->getMemory;
+        } else {
+            std::cout << "Switch to previous tab =\n";
+            std::cout << "No previous tab\n";
+        }
+    }
+
+    void switchToNextTab() {
+        if (current && current->next) {
+            current = current->next;
+            std::cout << "Switch to Next tab =\n";
+            std::cout << current->getUrl;
+            std::cout << current->getName;
+            std::cout << current->getMemory;
+        } else {
+            std::cout << "Switch to Next tab =\n";
+            std::cout << "No Next tab\n";
+        }
+    }
+
+    private:
+    Tab<T>* head;
+    Tab<T>* tail;
+    Tab<T>* current;
+};
 
 //Add display method in Browser template class 
     /*void display(){
@@ -36,7 +95,7 @@ class Tab {
         }
     */
 int main(){
-    
+
     /*Browser<double> b1;
     b1.addNewTab("https://www.google.com","Google",23.45);
     b1.display();
