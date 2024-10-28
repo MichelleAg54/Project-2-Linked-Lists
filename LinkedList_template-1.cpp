@@ -5,29 +5,23 @@
 #include<memory>
 #include<vector>
 #include<string>
+#include<algorithm>
+#include<utility>
 
 // Write template class Tab here
 template <typename T>
 class Tab {
     public:
+    // Created the three values.
+    std::string url;
+    std::string name;
+    T memory;
     // Created the two pointers.
     Tab* next;
     Tab* prev;
 
     Tab(const std::string& url, const std::string& name, const T& memory)
        : url(url), name(name), memory(memory), prev(nullptr), next(nullptr) {}
-    
-    ~Tab() {}
-
-    std::string getUrl() const { return url; }
-    std::string getName() const {return name;}
-    T getMemory() const {return memory;}
-
-    private:
-    // Created the three values.
-    std::string url;
-    std::string name;
-    T memory;
 
 };
 
@@ -39,7 +33,7 @@ class Browser {
     Browser() : head(nullptr), tail(nullptr), current(nullptr) {}
 
     void addNewTab(const std::string& url, const std::string& name, const T& memory) {
-        Tab<T>* newTab = new Tab(url, name, memory);
+        Tab<T>* newTab = new Tab<T>(url, name, memory);
         if (!head) {
             head = tail = current = newTab;
         } else {
@@ -53,12 +47,11 @@ class Browser {
     void switchToPrevTab() {
         if(current && current->prev) {
             current = current->prev;
-            std::cout << "Switch to previous tab =\n";
-            std::cout << current->getUrl;
-            std::cout << current->getName;
-            std::cout << current->getMemory;
+            // std::cout << "Switch to previous tab =\n";
+            std::cout << current->url << "\n";
+            std::cout << current->name << "\n";
+            std::cout << current->memory << "\n";
         } else {
-            std::cout << "Switch to previous tab =\n";
             std::cout << "No previous tab\n";
         }
     }
@@ -66,26 +59,162 @@ class Browser {
     void switchToNextTab() {
         if (current && current->next) {
             current = current->next;
-            std::cout << "Switch to Next tab =\n";
-            std::cout << current->getUrl;
-            std::cout << current->getName;
-            std::cout << current->getMemory;
+            // std::cout << "Switch to Next tab =\n";
+            std::cout << current->url << "\n";
+            std::cout << current->name << "\n";
+            std::cout << current->memory << "\n";
         } else {
-            std::cout << "Switch to Next tab =\n";
             std::cout << "No Next tab\n";
         }
     }
 
-    private:
-    Tab<T>* head;
-    Tab<T>* tail;
-    Tab<T>* current;
-};
+    
+    
+    void closeCurrentTab() {
+    if (!current) {
+        std::cout << "No current tab to close.\n";
+        return;
+    }
 
-//Add display method in Browser template class 
-    /*void display(){
+    Tab<T>* toDelete = current;
+
+    /* Set the current to the next tab if it exists; otherwise, use the previous tab
+    if (head == tail) {
+        head = tail = current = nullptr;
+    } else if (current->next) { // If there is a next tab
+        current = current->next;
+        if (toDelete->prev) {
+            toDelete->prev->next = toDelete->next;
+        }
+        toDelete->next->prev = toDelete->prev;
+    } else { // If current is the last tab
+        current = current->prev;
+        if (current) {
+            current->next = nullptr;
+            tail = current;
+        } else {
+            head = tail = current = nullptr; // No tabs left
+        }
+    }*/
+    if (head == tail) {
+        head = tail = current = nullptr;
+    } else {
+        if (toDelete->prev) {
+            toDelete->prev->next = toDelete->next;
+        }
+        if (toDelete->next) {
+            toDelete->next->prev = toDelete->prev;
+        }
+        if (current == tail) {
+            current = current->prev; // move to previous tab if current is the last one
+            tail = current;
+        } else {
+            current = current->next; // move to next tab
+        }
+    }
+
+
+
+    //std::cout << "Closed tab: " << toDelete->name << " (" << toDelete->url << "), Memory: " << toDelete->memory << "\n";
+    delete toDelete;
+
+    // Print the new current tab or a message if there are no more tabs
+    if (current) {
+        std::cout << "Now the current tab = " << current->name << "\n";
+    } else {
+        std::cout << "All tabs are closed." << "\n";
+    }
+}
+
+    void bookmarkCurrent() {
+    if (!current) {
+        std::cout << "No current tab to bookmark." << "\n";
+        return;
+    }
+
+    // Create a bookmark pair with the current tab's name and url
+    std::pair<std::string, std::string> bookmark = make_pair(current->name, current->url);
+
+    // Check if the bookmark already exists in the bookmarks vector
+    if (find(bookmarks.begin(), bookmarks.end(), bookmark) != bookmarks.end()) {
+        std::cout << "The bookmark is already added!!" << "\n";
+    } else {
+        // Add the bookmark if it doesn't exist
+        bookmarks.push_back(bookmark);
+        // sstd::cout << "Bookmark added: " << current->name << " (" << current->url << ")" << "\n";
+    }
+}
+    
+
+    void showBookmarkTab() {
+        std::cout << "Bookmarks:\n";
+        for (const auto& bm : bookmarks) {
+            std::cout << bm.first << " (" << bm.second << ")" << "\n";
+        }
+    }
+
+    void moveCurrentToFirst() {
+        if (!current || current == head) {
+            std::cout << "Current tab is already at the first position or there are no tabs.\n";
+            return;
+        }
+
+        // Remove current tab from its current position
+        if (current->prev) current->prev->next = current->next;
+        if (current->next) current->next->prev = current->prev;
+        if (current == tail) tail = current->prev;
+
+        // Move current tab to the head
+        current->next = head;
+        current->prev = nullptr;
+        head->prev = current;
+        head = current;
+
+        // std::cout << "Moved current tab to the first position: " << current->name << "\n";
+    }
+
+    // Calculate the total memory consumed by all tabs
+    T total_memory() const {
+        T totalMemory = 0;
+        Tab<T>* temp = head;
+        while (temp) {
+            totalMemory += temp->memory;
+            temp = temp->next;
+        }
+        return totalMemory;
+    }
+
+    // Delete the tab consuming the highest memory
+    void deleteTab() {
+        if (!head) {
+            std::cout << "No tabs to delete.\n";
+            return;
+        }
+
+        // Find the tab with the highest memory consumption
+        Tab<T>* maxMemoryTab = head;
+        Tab<T>* temp = head;
+        while (temp) {
+            if (temp->memory > maxMemoryTab->memory) {
+                maxMemoryTab = temp;
+            }
+            temp = temp->next;
+        }
+
+        // Remove maxMemoryTab from the list
+        if (maxMemoryTab->prev) maxMemoryTab->prev->next = maxMemoryTab->next;
+        if (maxMemoryTab->next) maxMemoryTab->next->prev = maxMemoryTab->prev;
+        if (maxMemoryTab == head) head = maxMemoryTab->next;
+        if (maxMemoryTab == tail) tail = maxMemoryTab->prev;
+
+        std::cout << "Deleted element: " << maxMemoryTab->name
+             << "with memory size = " << maxMemoryTab->memory << "\n";
+        delete maxMemoryTab;
+    }
+    // Add display method in Browser template class 
+    void display(){
             auto curr = head;
-            std::cout<<"Browser tab list = "<<std::endl;
+            std::cout<<"Browser tab list = \n";
             while(curr){
                 std::cout<<"| "<<curr->name<<"  x|-->";
                 curr = curr->next;
@@ -93,10 +222,20 @@ class Browser {
             std::cout<<std::endl;
             std::cout<<std::endl;
         }
-    */
+
+    private:
+    Tab<T>* head;
+    Tab<T>* tail;
+    Tab<T>* current;
+    std::vector<std::pair<std::string, std::string>> bookmarks;
+
+};
+
+
+
 int main(){
 
-    /*Browser<double> b1;
+    Browser<double> b1;
     b1.addNewTab("https://www.google.com","Google",23.45);
     b1.display();
     std::cout<<"Switch to previous tab = "<<std::endl;
@@ -147,6 +286,6 @@ int main(){
     b1.showBookmarkTab();
     b1.total_memory();
     b1.deleteTab();
-    b1.display();*/
+    b1.display();
     return 0;
 }
