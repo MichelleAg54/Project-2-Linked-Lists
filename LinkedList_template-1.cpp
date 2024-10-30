@@ -46,7 +46,6 @@ class Browser {
     void switchToPrevTab() {
         if(current && current->prev) {
             current = current->prev;
-            // std::cout << "Switch to previous tab =\n";
             std::cout << current->url << "\n";
             std::cout << current->name << "\n";
             std::cout << current->memory << "\n";
@@ -58,7 +57,6 @@ class Browser {
     void switchToNextTab() {
         if (current && current->next) {
             current = current->next;
-            // std::cout << "Switch to Next tab =\n";
             std::cout << current->url << "\n";
             std::cout << current->name << "\n";
             std::cout << current->memory << "\n";
@@ -73,7 +71,6 @@ class Browser {
         if (!current) return;
         
         Tab<T>* tabToDelete = current;
-        // std::cout << "Closing tab: " << current->name << " (" << current->url << ")\n";
 
         if (current == head) head = current->next;
         if (current == tail) tail = current->prev;
@@ -94,16 +91,12 @@ class Browser {
         return;
     }
 
-    // Create a bookmark pair with the current tab's name and url
     std::pair<std::string, std::string> bookmark = make_pair(current->name, current->url);
 
-    // Check if the bookmark already exists in the bookmarks vector
     if (find(bookmarks.begin(), bookmarks.end(), bookmark) != bookmarks.end()) {
         std::cout << "The bookmark is already added!!" << "\n";
     } else {
-        // Add the bookmark if it doesn't exist
         bookmarks.push_back(bookmark);
-        // sstd::cout << "Bookmark added: " << current->name << " (" << current->url << ")" << "\n";
     }
 }
     
@@ -121,21 +114,17 @@ class Browser {
             return;
         }
 
-        // Remove current tab from its current position
         if (current->prev) current->prev->next = current->next;
         if (current->next) current->next->prev = current->prev;
         if (current == tail) tail = current->prev;
 
-        // Move current tab to the head
         current->next = head;
         current->prev = nullptr;
         head->prev = current;
         head = current;
 
-        // std::cout << "Moved current tab to the first position: " << current->name << "\n";
     }
 
-    // Calculate the total memory consumed by all tabs
     T total_memory() const {
         T totalMemory = 0;
         Tab<T>* temp = head;
@@ -146,14 +135,12 @@ class Browser {
         return totalMemory;
     }
 
-    // Delete the tab consuming the highest memory
     void deleteTab() {
         if (!head) {
             std::cout << "No tabs to delete.\n";
             return;
         }
 
-        // Find the tab with the highest memory consumption
         Tab<T>* maxMemoryTab = head;
         Tab<T>* temp = head;
         while (temp) {
@@ -163,7 +150,6 @@ class Browser {
             temp = temp->next;
         }
 
-        // Remove maxMemoryTab from the list
         if (maxMemoryTab->prev) maxMemoryTab->prev->next = maxMemoryTab->next;
         if (maxMemoryTab->next) maxMemoryTab->next->prev = maxMemoryTab->prev;
         if (maxMemoryTab == head) head = maxMemoryTab->next;
@@ -173,7 +159,7 @@ class Browser {
              << "with memory size = " << maxMemoryTab->memory << "\n";
         delete maxMemoryTab;
     }
-    // Add display method in Browser template class 
+    
     void display(){
             auto curr = head;
             std::cout << "Browser tab list = \n";
