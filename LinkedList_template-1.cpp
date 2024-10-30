@@ -176,13 +176,12 @@ class Browser {
     // Add display method in Browser template class 
     void display(){
             auto curr = head;
-            std::cout<<"Browser tab list = \n";
+            std::cout << "Browser tab list = \n";
             while(curr){
-                std::cout<<"| "<<curr->name<<"  x|-->";
+                std::cout << "| "<<curr->name << "  x|-->";
                 curr = curr->next;
             }
-            std::cout<<std::endl;
-            std::cout<<std::endl;
+            std::cout << "\n";
         }
 
     private:
