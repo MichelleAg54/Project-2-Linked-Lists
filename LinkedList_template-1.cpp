@@ -6,7 +6,6 @@
 #include<vector>
 #include<string>
 #include<algorithm>
-#include<utility>
 
 // Write template class Tab here
 template <typename T>
@@ -71,60 +70,23 @@ class Browser {
     
     
     void closeCurrentTab() {
-    if (!current) {
-        std::cout << "No current tab to close.\n";
-        return;
+        if (!current) return;
+        
+        Tab<T>* tabToDelete = current;
+        // std::cout << "Closing tab: " << current->name << " (" << current->url << ")\n";
+
+        if (current == head) head = current->next;
+        if (current == tail) tail = current->prev;
+        if (current->prev) current->prev->next = current->next;
+        if (current->next) current->next->prev = current->prev;
+        
+        current = (tabToDelete->next) ? tabToDelete->next : tabToDelete->prev;
+        delete tabToDelete;
+
+        if (current)
+            std::cout << "Now the current tab = " << current->name << "\n";
+
     }
-
-    Tab<T>* toDelete = current;
-
-    /* Set the current to the next tab if it exists; otherwise, use the previous tab
-    if (head == tail) {
-        head = tail = current = nullptr;
-    } else if (current->next) { // If there is a next tab
-        current = current->next;
-        if (toDelete->prev) {
-            toDelete->prev->next = toDelete->next;
-        }
-        toDelete->next->prev = toDelete->prev;
-    } else { // If current is the last tab
-        current = current->prev;
-        if (current) {
-            current->next = nullptr;
-            tail = current;
-        } else {
-            head = tail = current = nullptr; // No tabs left
-        }
-    }*/
-    if (head == tail) {
-        head = tail = current = nullptr;
-    } else {
-        if (toDelete->prev) {
-            toDelete->prev->next = toDelete->next;
-        }
-        if (toDelete->next) {
-            toDelete->next->prev = toDelete->prev;
-        }
-        if (current == tail) {
-            current = current->prev; // move to previous tab if current is the last one
-            tail = current;
-        } else {
-            current = current->next; // move to next tab
-        }
-    }
-
-
-
-    //std::cout << "Closed tab: " << toDelete->name << " (" << toDelete->url << "), Memory: " << toDelete->memory << "\n";
-    delete toDelete;
-
-    // Print the new current tab or a message if there are no more tabs
-    if (current) {
-        std::cout << "Now the current tab = " << current->name << "\n";
-    } else {
-        std::cout << "All tabs are closed." << "\n";
-    }
-}
 
     void bookmarkCurrent() {
     if (!current) {
